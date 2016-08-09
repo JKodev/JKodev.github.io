@@ -1,10 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>Kodev</title>
+  <title>Drawing tools</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+  }
+  #map {
+      height: 100%;
+  }
+</style>
 </head>
 <body>
-	...
+    <div id="map" style="width: 600px; float:left"></div>
+    <div id="data">
+        <textarea id="data-content" style="width: 600px; height: 500px;">
+            
+        </textarea>
+    </div>
+    <script>
+        var map;
+        var drawingManager;
+        var data = [];
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 8
+            });
+
+            drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.MARKER,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: [
+                        google.maps.drawing.OverlayType.MARKER,
+                        google.maps.drawing.OverlayType.CIRCLE,
+                        google.maps.drawing.OverlayType.POLYGON,
+                        google.maps.drawing.OverlayType.POLYLINE,
+                        google.maps.drawing.OverlayType.RECTANGLE
+                    ]
+                },
+                circleOptions: {
+                    fillColor: '#ffff00',
+                    fillOpacity: 1,
+                    strokeWeight: 5,
+                    clickable: false,
+                    editable: true,
+                    zIndex: 1
+              }
+            });
+            drawingManager.setMap(map);
+            google.maps.event.addListener(drawingManager, 'polygoncomplete', function(event) {
+                var vertices = event.getPath();
+                var contentString = [];
+                for (var i=0; i < vertices.getLength(); i++) {
+                    var xy = vertices.getAt(i);
+                    var obj = {
+                        lat: xy.lat(),
+                        lng: xy.lng()
+                    };
+                    contentString.push(obj);
+                    //contentString += '{ "lat": ' + xy.lat() + ', "lng": ' + xy.lng() + '},<br>';
+                }
+                data.push(contentString);
+                //contentString += "]";
+                document.getElementById("data-content").innerHTML = JSON.stringify(data);  
+            });
+
+            google.maps.event.addListener(drawingManager, 'markercomplete', function(event) {
+                var obj = {
+                    title: "",
+                    lat: event.getPosition().lat(),
+                    lng: event.getPosition().lng()
+                }
+                data.push(obj);
+                document.getElementById("data-content").innerHTML = JSON.stringify(data);
+            });
+        }
+    </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsJeLjJDJtTGCf4pQkdHftCL6F8RLxHCo&signed_in=true&libraries=drawing&callback=initMap"
+async defer></script>
 </body>
 </html>
