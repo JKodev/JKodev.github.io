@@ -1,89 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Drawing tools</title>
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-  <meta charset="utf-8">
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-  }
-  #map {
-      height: 100%;
-  }
-</style>
+	<title>Jonathan Huamani - Developer</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script type="text/javascript" src="scripts/shCore.js"></script>
+	<script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+	<script type="text/javascript" src="scripts/shBrushPython.js"></script>
+	<link type="text/css" rel="stylesheet" href="styles/shCoreRDark.css"/>
+	<script type="text/javascript">
+		SyntaxHighlighter.config.bloggerMode = true;
+		SyntaxHighlighter.config.strings.viewSource = "view my source!!!!";
+		SyntaxHighlighter.all();
+	</script>
 </head>
 <body>
-    <div id="map" style="width: 600px; float:left"></div>
-    <div id="data">
-        <textarea id="data-content" style="width: 600px; height: 500px;">
-            
-        </textarea>
-    </div>
-    <script>
-        var map;
-        var drawingManager;
-        var data = [];
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: -12.033948163635902,lng:-77.0416259765625},
-                zoom: 8
-            });
+<header>
+	# Jonathan Huamani <span class="tag">(@JKodev)</span>
+</header>
+<aside>
+	<pre class="brush: python; highlight: [26]; toolbar: false;">
+		class Programmer(object):
+		    """ Programmer object without animation. Maybe need coffee or Pizza. """
+		    def __init__(self, name, phone, email):
+		        self._name = name
+		        self._phone = phone
+		        self._email = email
+		        self._skills = {}
+		        self._max_length = 0
 
-            drawingManager = new google.maps.drawing.DrawingManager({
-                drawingMode: google.maps.drawing.OverlayType.MARKER,
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
-                    drawingModes: [
-                        google.maps.drawing.OverlayType.MARKER,
-                        google.maps.drawing.OverlayType.CIRCLE,
-                        google.maps.drawing.OverlayType.POLYGON,
-                        google.maps.drawing.OverlayType.POLYLINE,
-                        google.maps.drawing.OverlayType.RECTANGLE
-                    ]
-                },
-                circleOptions: {
-                    fillColor: '#ffff00',
-                    fillOpacity: 1,
-                    strokeWeight: 5,
-                    clickable: false,
-                    editable: true,
-                    zIndex: 1
-              }
-            });
-            drawingManager.setMap(map);
-            google.maps.event.addListener(drawingManager, 'polygoncomplete', function(event) {
-                var vertices = event.getPath();
-                var contentString = [];
-                for (var i=0; i < vertices.getLength(); i++) {
-                    var xy = vertices.getAt(i);
-                    var obj = {
-                        lat: xy.lat(),
-                        lng: xy.lng()
-                    };
-                    contentString.push(obj);
-                    //contentString += '{ "lat": ' + xy.lat() + ', "lng": ' + xy.lng() + '},<br>';
-                }
-                data.push(contentString);
-                //contentString += "]";
-                document.getElementById("data-content").innerHTML = JSON.stringify(data);  
-            });
+		    def set_skill(self, skill, knowledge=0):
+		        """
+		        :param skill: 		string 		Skill name
+		        :param knowledge: 	integer 	Level of knowledge 0-100 percent
+		        """
+		        self._skills.update({skill: knowledge})
+		        if len(skill) > self._max_length:
+		            self._max_length = len(skill)
 
-            google.maps.event.addListener(drawingManager, 'markercomplete', function(event) {
-                var obj = {
-                    title: "",
-                    lat: event.getPosition().lat(),
-                    lng: event.getPosition().lng()
-                }
-                data.push(obj);
-                document.getElementById("data-content").innerHTML = JSON.stringify(data);
-            });
-        }
-    </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsJeLjJDJtTGCf4pQkdHftCL6F8RLxHCo&signed_in=true&libraries=drawing&callback=initMap"
-async defer></script>
+		    def show_information(self):
+		    	print 'Name:', self._name
+		    	print 'Phone:', self._phone
+		    	print 'Email:', self._email
+		        for k, v in self._skills.iteritems():
+		            print '->', k, ' ' * (self._max_length - len(k)), '[', '=' * v, '_' * (100 - v), ']'
+
+		programmer = Programmer(name='Jonathan Huamani', phone='+51 951 704 068', email='jonadotnet@gmail.com')
+		programmer.set_skill(skill='PHP', knowledge=90)
+		programmer.set_skill(skill='Python', knowledge=80)
+		programmer.set_skill(skill='JavaScript', knowledge=60)
+		programmer.set_skill(skill='C++', knowledge=70)
+		programmer.set_skill(skill='Laravel', knowledge=80)
+		programmer.set_skill(skill='Symfony', knowledge=70)
+		programmer.set_skill(skill='Django', knowledge=70)
+		programmer.set_skill(skill='Falcon', knowledge=70)
+		programmer.set_skill(skill='MySQL', knowledge=70)
+		programmer.set_skill(skill='PostgreSQL', knowledge=85)
+		programmer.set_skill(skill='SQLServer', knowledge=70)
+		programmer.set_skill(skill='Redis', knowledge=90)
+		programmer.set_skill(skill='Angular JS v1', knowledge=80)
+
+		programmer.show_information()
+	</pre>
+</aside>
 </body>
 </html>

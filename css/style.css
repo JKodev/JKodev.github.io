@@ -1,0 +1,22 @@
+body {
+	background-color: #25373D;
+	color: #ecf0f1;
+	font-family: Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+	font-size: 13px;
+	padding-left: 50px;
+}
+
+header {
+	font-size: 18px;
+}
+
+aside {
+	padding-left: 25px;
+	padding-right: 50px;
+	width: 80%;
+}
+
+.tag {
+	color: #3498db;
+	font-weight: bold;
+}
